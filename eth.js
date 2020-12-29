@@ -9,11 +9,22 @@ module.exports = class eth {
         this.client     = rest.wrap(mime).wrap(errorCode, { code: 500 });
     }
     
-    /*
-    async start() { 
-        let response = await this.client(new request(this.nodeURL, 'miner_start', []));        
+    async accounts() { 
+        let response = await this.client(new request(this.nodeURL, 'eth_accounts', []));        
         if (response.entity.error) throw response.entity.error;
         return response.entity.result; 
     }
-    */
+
+    async mining() { 
+        let response = await this.client(new request(this.nodeURL, 'eth_mining', []));        
+        if (response.entity.error) throw response.entity.error;
+        return response.entity.result; 
+    }
+
+    async getBalance(account, block) { 
+        let response = await this.client(new request(this.nodeURL, 'eth_getBalance', [ account, block ]));        
+        if (response.entity.error) throw response.entity.error;
+        return response.entity.result; 
+    }
+
 }

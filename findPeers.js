@@ -1,28 +1,39 @@
-var admin = require("./admin.js");
-var net = require("./net.js");
+const Web3      = require('web3');
+
+let web3_1= new Web3('ws://localhost:3301');
+let web3_2= new Web3('ws://localhost:3302');
+let web3_3= new Web3('ws://localhost:3303');
+let web3_4= new Web3('ws://localhost:3304');
 
 async function updateNodes()
-{    
-    let admin1 = new admin('127.0.0.1:8101');
-    let admin2 = new admin('127.0.0.1:8102');
-    let admin3 = new admin('127.0.0.1:8103');
+{        
+    let eNode1 = await web3_1.admin.getNodeInfo();
+    let eNode2 = await web3_2.eth.getNodeInfo();
+    let eNode3 = await web3_3.eth.getNodeInfo();
+    let eNode4 = await web3_4.eth.getNodeInfo();
 
-    let eNode1 = await admin1.getEnode();
-    let eNode2 = await admin2.getEnode();
-    let eNode3 = await admin3.getEnode();
+    console.log(eNode1);
 
-    await admin2.addPeer(eNode1.enr);
-    await admin3.addPeer(eNode1.enr);
+    await web3_2.admin.addPeer(eNode1.enr);
+    await web3_3.admin.addPeer(eNode1.enr);
+    await web3_4.admin.addPeer(eNode1.enr);
 
-    await admin1.addPeer(eNode2.enr);
-    await admin3.addPeer(eNode2.enr);
+    await web3_1.admin.addPeer(eNode2.enr);
+    await web3_3.admin.addPeer(eNode2.enr);
+    await web3_4.admin.addPeer(eNode2.enr);
 
-    await admin1.addPeer(eNode3.enr);
-    await admin2.addPeer(eNode3.enr);
+    await web3_1.admin.addPeer(eNode3.enr);
+    await web3_2.admin.addPeer(eNode3.enr);
+    await web3_4.admin.addPeer(eNode3.enr);
 
-    console.log(await admin1.peers());
-    console.log(await admin2.peers());
-    console.log(await admin3.peers());
+    await web3_1.admin.addPeer(eNode4.enr);
+    await web3_2.admin.addPeer(eNode4.enr);
+    await web3_3.admin.addPeer(eNode4.enr);
+
+    console.log(await web3_1.admin.peers());
+    console.log(await web3_2.admin.peers());
+    console.log(await web3_3.admin.peers());
+    console.log(await web3_4.admin.peers());
 }
 
 function error(e) { console.error(e); }
