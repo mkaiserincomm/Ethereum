@@ -32,19 +32,16 @@ async function signContract()
         gasPrice: gasPriceHex,
         gasLimit: gasLimitHex,
         //data: bytecode,
-        from: account,
-        //value: "0x10000000000",
-        nonce: "0x" + (await web3.eth.getTransactionCount('0x18ecbbb365a076c30793412503ba21a01e637922')).toString(16),
+        from: account,        
+        nonce: "0x" + (await web3.eth.getTransactionCount(account)).toString(16),
     };
 
     let tx = new Tx(tra, { common: customCommon });
     tx.sign(privateKey);
 
     let stx = tx.serialize();
-    web3.eth.sendSignedTransaction('0x' + stx.toString('hex'), (err, hash) => {
-        if (err) { console.log(err); return; }
-        console.log('contract creation tx: ' + hash);
-    });
+    let hash = await web3.eth.sendSignedTransaction('0x' + stx.toString('hex'));    
+    console.log('contract creation tx: ' + hash);    
 }
 
 signContract();
