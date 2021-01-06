@@ -2,6 +2,7 @@
 runnode () {
   geth \
 	--datadir="~/.ethereum/$1/"	\
+    --allow-insecure-unlock \
 	--verbosity 3 \
 	--port 303$1 \
 	--ws \
@@ -21,6 +22,7 @@ echo $bootnode
 runnode 02 --nat extip:10.0.0.117 --bootnodes $bootnode 
 runnode 03 --nat extip:10.0.0.117 --bootnodes $bootnode 
 runnode 04 --nat extip:10.0.0.117 --bootnodes $bootnode 
+sleep 10s
 
 geth --exec "admin.addPeer(`geth --exec "admin.nodeInfo.enr" attach --datadir ~/.ethereum/01/ `)" attach --datadir ~/.ethereum/02/
 geth --exec "admin.addPeer(`geth --exec "admin.nodeInfo.enr" attach --datadir ~/.ethereum/01/ `)" attach --datadir ~/.ethereum/03/

@@ -9,23 +9,48 @@ const util          = require('util');
 const crypto        = require('crypto');
 
 // Connect to the network
-const web3          = new Web3("ws://localhost:3304");
+const web3          = new Web3(http://localhost:8543");
 
 // Stuff to get the private key
-const account       = "0x18ecbbb365a076c30793412503ba21a01e637922";
-const toAccount     = "0xcdf97451671304407b362c2a354bfc71b287a969";
-const datadir       = "/home/mkaiser/.ethereum/04";
-const password      = "P@ssw0rd";
-const keyObject     = keythereum.importFromFile(account, datadir);
-const privateKey    = keythereum.recover(password, keyObject);
+//const account       = "0x18ecbbb365a076c30793412503ba21a01e637922";
+//const toAccount     = "0xcdf97451671304407b362c2a354bfc71b287a969";
+//const datadir       = "/home/mkaiser/.ethereum/04";
+//const password      = "P@$$w0rd!";
+//const keyObject     = keythereum.importFromFile(account, datadir);
+//const privateKey    = keythereum.recover(password, keyObject);
 
 // Stuff about our contract
-const contractName      = "SimpleCoin";
-const abi               = [{"inputs":[{"internalType":"uint256","name":"_initialSupply","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"coinBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"transfer","outputs":[],"stateMutability":"nonpayable","type":"function"}];
-const bytecode          = "0x608060405234801561001057600080fd5b506040516101e63803806101e68339818101604052602081101561003357600080fd5b505133600090815260208190526040902055610192806100546000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c8063a9059cbb1461003b578063fabde80c14610069575b600080fd5b6100676004803603604081101561005157600080fd5b506001600160a01b0381351690602001356100a1565b005b61008f6004803603602081101561007f57600080fd5b50356001600160a01b031661014a565b60408051918252519081900360200190f35b3360009081526020819052604090205481106100bc57600080fd5b6001600160a01b03821660009081526020819052604090205481810110156100e357600080fd5b33600081815260208181526040808320805486900390556001600160a01b03861680845292819020805486019055805185815290519293927fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef929181900390910190a35050565b6000602081905290815260409020548156fea26469706673582212204a5e593c146e046e73b00685dab8871687f182a66c05974ba663db64de69bcde64736f6c63430007040033";
+const contractName      = "HelloWorld";
+const abi               = [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "message",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "Hello",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ];
+const bytecode          = "0x608060405234801561001057600080fd5b5061028e806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c8063bcdfe0d51461003b578063e21f37ce14610045575b600080fd5b6100436100c8565b005b61004d610116565b6040518080602001828103825283818151815260200191508051906020019080838360005b8381101561008d578082015181840152602081019050610072565b50505050905090810190601f1680156100ba5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b6040518060400160405280600c81526020017f48656c6c6f20576f726c64210000000000000000000000000000000000000000815250600090805190602001906101139291906101b4565b50565b60008054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156101ac5780601f10610181576101008083540402835291602001916101ac565b820191906000526020600020905b81548152906001019060200180831161018f57829003601f168201915b505050505081565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106101f557805160ff1916838001178555610223565b82800160010185558215610223579182015b82811115610222578251825591602001919060010190610207565b5b5090506102309190610234565b5090565b61025691905b8082111561025257600081600090555060010161023a565b5090565b9056fea265627a7a723158204168720a1a76fbdb9de10b10fd1fb314e89a12954cd3929132e9e4eedf9cf07964736f6c63430005100032";
 
 // Use our private chain
-const customCommon = Common.forCustomChain('mainnet', { name: 'my-private-blockchain', networkId: 1, chainId:0x3ad }, 'petersburg' );
+const customCommon = Common.forCustomChain('mainnet', { name: 'my-private-blockchain', networkId: 1, chainId:1 }, 'petersburg' );
 
 async function useContract(contractAddress)
 {
@@ -34,11 +59,11 @@ async function useContract(contractAddress)
     let contractInstance = new web3.eth.Contract(abi, contractAddress);
     console.log('\tcontractInstance.methods:', contractInstance.methods);
 
-    let coinBalance = contractInstance.methods.coinBalance;
-    console.log('\tcoinBalance:', coinBalance);
+    let hello = contractInstance.methods.Hello;
+    console.log('\thello:', hello);
 
-    let balance = await coinBalance(account).call();
-    console.log('\tbalance:', balance);
+    let result = await hello().call();
+    console.log('\tresult:', result);
 }
 
 async function signContract()
@@ -90,8 +115,8 @@ async function signContract()
 async function main()
 {
     console.log('main');    
-    let receipt = await signContract();
-    await useContract(receipt.contractAddress);
+    //let receipt = await signContract();
+    await useContract("0x5c692415B50f361c4ec2a9f4B49BB8708a434e28");
 }
 
 main();
