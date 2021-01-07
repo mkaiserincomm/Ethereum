@@ -1,28 +1,28 @@
 const Web3          = require("web3");
-const solc          = require("solc");
 const Tx            = require('ethereumjs-tx').Transaction;
 const keythereum    = require("keythereum");
 const Common        = require('ethereumjs-common').default;
 
 // Connect to the network
-const web3          = new Web3("ws://localhost:3304");
+const web3          = new Web3("http://localhost:8543");
 
 // Stuff to get the private key
-const fromAccount   = "0x18ecbbb365a076c30793412503ba21a01e637922";
-const toAccount     = "0xcdf97451671304407b362c2a354bfc71b287a969";
-const datadir       = "/home/mkaiser/.ethereum/04";
-const password      = "P@ssw0rd";
+const fromAccount   = "0xe6ac52c3478865ff3f181e29b02a5caab2f6eb57";
+const toAccount     = "0xe6c8a578fc2af3793bc65c8b71f085cc31cc16c4";
+
+const datadir       = "/home/mkaiser/ethereum-network/dataDir";
+const password      = "P@$$w0rd!";
 const keyObject     = keythereum.importFromFile(fromAccount, datadir);
 const privateKey    = keythereum.recover(password, keyObject);
 
 // Use our private chain
-const customCommon  = Common.forCustomChain('mainnet', { name: 'my-private-blockchain', networkId: 1, chainId:0x3ad }, 'petersburg' );
+const customCommon  = Common.forCustomChain('mainnet', {networkId: 1, chainId:2019 }, 'petersburg' );
 
 // Price limits
 const gasPrice      = web3.eth.gasPrice;
 const gasPriceHex   = web3.utils.toHex(gasPrice);
 const gasLimitHex   = web3.utils.toHex(3000000);
-const valueHex      = web3.utils.toHex(14000000000000000);
+const valueHex      = web3.utils.toHex(web3.utils.toWei("1"));
 
 async function Xac()
 {        
