@@ -1,7 +1,7 @@
 const Web3                  = require("web3");
 const Tx                    = require('ethereumjs-tx').Transaction;
-const keythereum            = require("keythereum");
 const Common                = require('ethereumjs-common').default;
+const keythereum            = require("keythereum");
 const fs                    = require('fs');
 const Config                = require('./config');
 
@@ -9,8 +9,7 @@ module.exports = class SmartContract {
     #dataDir        = "";
     #password       = "";
     #web3           = null;        
-    #customCommon   = Common.forCustomChain('mainnet', {networkId: 1, chainId:2019 }, 'petersburg' );
-
+    
     instance   = null;
     
     constructor(contractFilename, url = Config.url, dataDir = Config.dataDir, password = Config.password) {        
@@ -25,7 +24,7 @@ module.exports = class SmartContract {
         // Get the contract
         let buffer                  = fs.readFileSync(contractFilename);
         let contractTemplate        = JSON.parse(buffer);
-        let contractAccount         = contractTemplate.networks['1234'].address;
+        let contractAccount         = contractTemplate.networks[Config.networkId].address;
         let abi                     = contractTemplate.abi;          
         this.instance               = new this.#web3.eth.Contract(abi, contractAccount);                                           
     }
@@ -46,13 +45,13 @@ module.exports = class SmartContract {
         let privateKey  = keythereum.recover(this.#password, keyObject);
 
         // Define our private chain
-        let customCommon = Common.forCustomChain('mainnet', {networkId: 1, chainId:2019 }, 'petersburg' );
+        let customCommon = Common.forCustomChain(Config.customChain.baseChain, Config.customChain.chainParams, Config.customChain.hardFork);
         
         // Sign the transaction     
         let tra = { 
             from:   account, 
             to:     this.instance.options.address, 
-            gas:    2000000, 
+            gas:    Config.gas, 
             data:   method.encodeABI(), 
             nonce: "0x" + (await this.#web3.eth.getTransactionCount(account)).toString(16) 
         };    
