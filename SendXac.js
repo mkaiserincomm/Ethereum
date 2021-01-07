@@ -1,3 +1,7 @@
+///////////////////////////////////////////
+// Move ETH from one account to another
+///////////////////////////////////////////
+
 const Web3          = require("web3");
 const Tx            = require('ethereumjs-tx').Transaction;
 const keythereum    = require("keythereum");
