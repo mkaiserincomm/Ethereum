@@ -1,0 +1,35 @@
+module.exports = {
+  rpc: {
+    host:"localhost",
+    port:8543
+  },
+  networks: {
+    development: {
+      host: "localhost", 
+      port: 8543,
+      network_id: "*",
+      from: "0xe6ac52c3478865ff3f181e29b02a5caab2f6eb57",      
+      gas: 20000000
+    }
+  },
+
+  // Set default mocha options here, use special reporters etc.
+  mocha: {
+    // timeout: 100000
+  },
+
+  // Configure your compilers
+  compilers: {
+    solc: {
+      // version: "0.5.1",    // Fetch exact version from solc-bin (default: truffle's version)
+      // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
+      // settings: {          // See the solidity docs for advice about optimization and evmVersion
+      //  optimizer: {
+      //    enabled: false,
+      //    runs: 200
+      //  },
+      //  evmVersion: "byzantium"
+      // }
+    }
+  }
+};

@@ -3,6 +3,7 @@ const Tx                    = require('ethereumjs-tx').Transaction;
 const keythereum            = require("keythereum");
 const Common                = require('ethereumjs-common').default;
 const fs                    = require('fs');
+const Config                = require('./config');
 
 module.exports = class SmartContract {
     #dataDir        = "";
@@ -12,8 +13,8 @@ module.exports = class SmartContract {
 
     instance   = null;
     
-    constructor(url, contractFilename, dataDir, password) {
-        
+    constructor(contractFilename, url = Config.url, dataDir = Config.dataDir, password = Config.password) {        
+
         // Store properties
         this.#dataDir               = dataDir;
         this.#password              = password;
