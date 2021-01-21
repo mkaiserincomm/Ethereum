@@ -98,3 +98,15 @@ This runs against a private Ethereum network as described below
     ```
     web3.fromWei(eth.getBalance(eth.coinbase), "ether")
     ```
+    
+## Comparison to Hyperledger Fabric
+| Ethereum                                                                                                                                                                      | Hyperledger Fabric                                                    |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------|
+| Non-permissioned.  Would have to implement manually.                                                                                                                          | Permissioned.                                                         |
+| Supported by IBM                                                                                                                                                              | Supported by consortium of 116 companies and educational institutions |
+| Supports Smart Contracts                                                                                                                                                      | Supports Smart Contracts                                              |
+| Moving to Proof of Stake.  Faster transactions.                                                                                                                               | Proof of work.  Slower transactions.                                  |
+| Both a coin and an application framework                                                                                                                                      | Only and application framework                                        |
+| Requires a transaction fee.  It is possible to use a "private coin" so this fee does not cost  real money on a private network, but the fee cannot be removed or set to zero. | The concept of a fee is not built into the network                    |
+
+The concept of the fee is undesirable.  Until Proof of Stake is implemented and mature the undesirability of the fee would make me recommend against Ethereum.  Once Proof of Stake is implemented it will be worth considering Ethereum at that time.
